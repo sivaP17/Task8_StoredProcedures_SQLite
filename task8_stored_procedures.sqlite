@@ -1,0 +1,27 @@
+CREATE TABLE employees (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT,
+  salary INTEGER,
+  bonus INTEGER DEFAULT 0
+);
+
+INSERT INTO employees (name, salary) VALUES ('Alice', 60000);
+INSERT INTO employees (name, salary) VALUES ('Bob', 40000);
+INSERT INTO employees (name, salary) VALUES ('Charlie', 70000);
+
+CREATE VIEW HighEarners AS
+SELECT name, salary
+FROM employees
+WHERE salary > 50000;
+
+CREATE TRIGGER BonusSetter
+AFTER INSERT ON employees
+FOR EACH ROW
+BEGIN
+  UPDATE employees
+  SET bonus = 5000
+  WHERE id = NEW.id AND salary > 50000;
+END;
+
+INSERT INTO employees (name, salary) VALUES ('David', 80000);
+SELECT * FROM employees;
